@@ -1,0 +1,20 @@
+# Node.js dependencies (if you use Node for development)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment variables
+.env
+
+# Build and deployment files
+dist/
+build/
+*.log
+
+# IDE/editor files
+.vscode/
+.idea/
+.DS_Store
+
+# System files
+Thumbs.db
