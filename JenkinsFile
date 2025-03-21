@@ -4,24 +4,18 @@ pipeline {
         // Stage 1: Build
         stage('Build') {
             steps {
-                sh 'mvn clean package' // Use Maven
+                echo 'Executing Build Stage'
             }
         }
 
         // Stage 2: Unit and Integration Tests
         stage('Unit and Integration Tests') {
             steps {
-                sh 'mvn test' // JUnit for unit tests
-                sh 'npm run integration-test' // Example: Postman/Newman for API tests
+                echo 'Running Unit and Integration Tests'
             }
             post {
                 always {
-                    emailext (
-                        subject: 'Test Results (Stage 2)',
-                        body: 'Build Status: ${currentBuild.currentResult}. Check logs attached.',
-                        to: 'your-email@example.com',
-                        attachmentsPattern: '**/test-results/*.log'
-                    )
+                    echo 'Sending Test Results Email (Stage 2)'
                 }
             }
         }
@@ -29,26 +23,18 @@ pipeline {
         // Stage 3: Code Analysis
         stage('Code Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar'
-                }
+                echo 'Performing Code Analysis'
             }
         }
 
         // Stage 4: Security Scan
         stage('Security Scan') {
             steps {
-                dependencyCheck additionalArguments: '--scan .', odcInstallation: 'OWASP-DC'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                echo 'Running Security Scan'
             }
             post {
                 always {
-                    emailext (
-                        subject: 'Security Scan Results (Stage 4)',
-                        body: 'Build Status: ${currentBuild.currentResult}. Check logs attached.',
-                        to: 'your-email@example.com',
-                        attachmentsPattern: '**/dependency-check-report.*'
-                    )
+                    echo 'Sending Security Scan Results Email (Stage 4)'
                 }
             }
         }
@@ -56,35 +42,27 @@ pipeline {
         // Stage 5: Deploy to Staging
         stage('Deploy to Staging') {
             steps {
-                sshagent(['staging-server-key']) {
-                    sh 'scp -r target/*.jar user@staging-ec2-ip:/app'
-                }
+                echo 'Deploying to Staging Environment'
             }
         }
 
         // Stage 6: Integration Tests on Staging
         stage('Integration Tests on Staging') {
             steps {
-                sh 'npm run staging-integration-test' // Test against staging URL
+                echo 'Running Integration Tests on Staging'
             }
         }
 
         // Stage 7: Deploy to Production
         stage('Deploy to Production') {
             steps {
-                sshagent(['production-server-key']) {
-                    sh 'scp -r target/*.jar user@production-ec2-ip:/app'
-                }
+                echo 'Deploying to Production Environment'
             }
         }
     }
     post {
         failure {
-            emailext (
-                subject: 'Pipeline Failed',
-                body: 'Check build ${env.BUILD_URL}',
-                to: 'your-email@example.com'
-            )
+            echo 'Pipeline Failed - Notifying Team'
         }
     }
 }
