@@ -8,7 +8,7 @@ pipeline {
             }
             post {
                 always {
-                    emailext (
+                    mail (
                         subject: 'Build Stage Completed',
                         body: 'The Build stage has completed successfully.',
                         to: 'samarthbhardwaj2@gmail.com'
@@ -25,7 +25,7 @@ pipeline {
             post {
                 always {
                     echo 'Sending Test Results Email (Stage 2)'
-                    emailext (
+                    mail (
                         subject: 'Unit and Integration Tests Completed',
                         body: 'The Unit and Integration Tests stage has completed successfully.',
                         to: 'samarthbhardwaj2@gmail.com'
@@ -41,7 +41,7 @@ pipeline {
             }
             post {
                 always {
-                    emailext (
+                    mail (
                         subject: 'Code Analysis Completed',
                         body: 'The Code Analysis stage has completed successfully.',
                         to: 'samarthbhardwaj2@gmail.com'
@@ -58,7 +58,7 @@ pipeline {
             post {
                 always {
                     echo 'Sending Security Scan Results Email (Stage 4)'
-                    emailext (
+                    mail (
                         subject: 'Security Scan Completed',
                         body: 'The Security Scan stage has completed successfully.',
                         to: 'samarthbhardwaj2@gmail.com'
@@ -74,7 +74,7 @@ pipeline {
             }
             post {
                 always {
-                    emailext (
+                    mail (
                         subject: 'Deploy to Staging Completed',
                         body: 'The deployment to the Staging environment has completed successfully.',
                         to: 'samarthbhardwaj2@gmail.com'
@@ -90,7 +90,7 @@ pipeline {
             }
             post {
                 always {
-                    emailext (
+                    mail (
                         subject: 'Integration Tests on Staging Completed',
                         body: 'The Integration Tests on Staging have completed successfully.',
                         to: 'samarthbhardwaj2@gmail.com'
@@ -106,7 +106,7 @@ pipeline {
             }
             post {
                 always {
-                    emailext (
+                    mail (
                         subject: 'Deploy to Production Completed',
                         body: 'The deployment to the Production environment has completed successfully.',
                         to: 'samarthbhardwaj2@gmail.com'
@@ -118,7 +118,7 @@ pipeline {
     post {
         failure {
             echo 'Pipeline Failed - Notifying Team'
-            emailext (
+            mail (
                 subject: 'Pipeline Failed',
                 body: 'The Jenkins pipeline has failed. Please check the logs for details.',
                 to: 'samarthbhardwaj2@gmail.com'
