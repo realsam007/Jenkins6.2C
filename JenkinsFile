@@ -6,6 +6,15 @@ pipeline {
             steps {
                 echo 'Executing Build Stage'
             }
+            post {
+                always {
+                    emailext (
+                        subject: 'Build Stage Completed',
+                        body: 'The Build stage has completed successfully.',
+                        to: 'samarthbhardwaj2@gmail.com'
+                    )
+                }
+            }
         }
 
         // Stage 2: Unit and Integration Tests
@@ -16,6 +25,11 @@ pipeline {
             post {
                 always {
                     echo 'Sending Test Results Email (Stage 2)'
+                    emailext (
+                        subject: 'Unit and Integration Tests Completed',
+                        body: 'The Unit and Integration Tests stage has completed successfully.',
+                        to: 'samarthbhardwaj2@gmail.com'
+                    )
                 }
             }
         }
@@ -24,6 +38,15 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 echo 'Performing Code Analysis'
+            }
+            post {
+                always {
+                    emailext (
+                        subject: 'Code Analysis Completed',
+                        body: 'The Code Analysis stage has completed successfully.',
+                        to: 'samarthbhardwaj2@gmail.com'
+                    )
+                }
             }
         }
 
@@ -35,6 +58,11 @@ pipeline {
             post {
                 always {
                     echo 'Sending Security Scan Results Email (Stage 4)'
+                    emailext (
+                        subject: 'Security Scan Completed',
+                        body: 'The Security Scan stage has completed successfully.',
+                        to: 'samarthbhardwaj2@gmail.com'
+                    )
                 }
             }
         }
@@ -44,12 +72,30 @@ pipeline {
             steps {
                 echo 'Deploying to Staging Environment'
             }
+            post {
+                always {
+                    emailext (
+                        subject: 'Deploy to Staging Completed',
+                        body: 'The deployment to the Staging environment has completed successfully.',
+                        to: 'samarthbhardwaj2@gmail.com'
+                    )
+                }
+            }
         }
 
         // Stage 6: Integration Tests on Staging
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running Integration Tests on Staging'
+            }
+            post {
+                always {
+                    emailext (
+                        subject: 'Integration Tests on Staging Completed',
+                        body: 'The Integration Tests on Staging have completed successfully.',
+                        to: 'samarthbhardwaj2@gmail.com'
+                    )
+                }
             }
         }
 
@@ -58,11 +104,25 @@ pipeline {
             steps {
                 echo 'Deploying to Production Environment'
             }
+            post {
+                always {
+                    emailext (
+                        subject: 'Deploy to Production Completed',
+                        body: 'The deployment to the Production environment has completed successfully.',
+                        to: 'samarthbhardwaj2@gmail.com'
+                    )
+                }
+            }
         }
     }
     post {
         failure {
             echo 'Pipeline Failed - Notifying Team'
+            emailext (
+                subject: 'Pipeline Failed',
+                body: 'The Jenkins pipeline has failed. Please check the logs for details.',
+                to: 'samarthbhardwaj2@gmail.com'
+            )
         }
     }
 }
